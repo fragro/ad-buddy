@@ -26,7 +26,8 @@ var LED4_UUID = "0000a004-0000-1000-8000-00805F9B34FB"
 appLog = function(msg) {
 	debug = true
 	if(debug) {
-		$("#info-list").append("<div>" + msg + "</div>")
+		var timestamp = '[' + new Date().toLocaleTimeString() + '] ';
+		$("#info-list").append("<div>" + timestamp + msg + "</div>")
 		console.log(msg);
 	}
 }
@@ -114,7 +115,7 @@ var app = {
 	onDeviceReady: function() {
 		this.receivedEvent('deviceready');
 		var resetBtn = document.getElementById("retry-btn");
-		resetBtn.addEventListener('click', this.receivedEvent('deviceready').bind(this), false);
+		resetBtn.addEventListener('click', this.receivedEvent('deviceready'), false);
 	},
 	onConnectError: function(err) {
 		appLog(err)
