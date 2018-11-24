@@ -1,0 +1,21 @@
+{
+  "app-dir": "app",
+  "www-dir": "www",
+  "index-file": "index.html",
+  "dont-build": [
+    "libs",
+    "ui"
+  ],
+  "uuid": "9d9951bd-e13c-456a-9b85-3fa1ece722ba",
+  "icon": "logo.png",
+  "plugins": [],
+  "libraries": [],
+  "name": "ad-buddy",
+  "title": "Ad Buddy Test App v0.0.2",
+  "description": "The future is bright.",
+  "long-description": "The future is bright.",
+  "version": "v0.0.2",
+  "author-name": "Fragro",
+  "author-email": "fragro@gmail.com",
+  "author-url": ""
+}
