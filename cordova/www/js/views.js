@@ -16,12 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var LED_SERVICE_UUID = "0000a000-0000-1000-8000-00805F9B34FB"
 
-var LED1_UUID = "0000a001-0000-1000-8000-00805F9B34FB"
-var LED2_UUID = "0000a002-0000-1000-8000-00805F9B34FB"
-var LED3_UUID = "0000a003-0000-1000-8000-00805F9B34FB"
-var LED4_UUID = "0000a004-0000-1000-8000-00805F9B34FB"
+// views should drive data retrieval and rendering of Handlebars templates
 views = {
 	main: function(device) {
 		$("#info-badge").html('Connected to device')
@@ -30,36 +26,24 @@ views = {
 			tpl = $("#home-tpl").html()
 			var homeTpl = Handlebars.compile(tpl);
 			$('body').html(homeTpl);
-			$("#info-list").append("<div>" + "Connecting to services..." + "</div>")
-			// Get service and characteristics.
-
-			var ledMap = [[LED1_UUID, LED2_UUID], [LED4_UUID, LED3_UUID]]
-			$("#info-list").append("<div>" + "Connected to LEDs" + "</div>")
 			// Create update map callback and load pixel picker
-			updateMap = function(map, rowIndex, cellIndex){
-				var service = evothings.ble.getService(device, LED_SERVICE_UUID)
-				var ledChr = evothings.ble.getCharacteristic(service, ledMap[rowIndex][cellIndex])
-				$("#info-list").html("")
-				appLog("Device: " + device.name + " : " + rowIndex + "-" + cellIndex);
-				appLog("Char:"  + (ledMap[rowIndex][cellIndex]));
-				var i = (map[rowIndex][cellIndex].toString() == "255,255,255") ? 0 : 1;
-				evothings.ble.writeCharacteristic(
-					device,
-					ledChr,
-					new Uint8Array([i]),
-					function(){}, function(){})
-			}
-			$('.pixel-picker-container').pixelPicker({palette: [ '#ffffff', '#000000'], update: updateMap.bind(this)});
+			led.initialize(device);
 		 }
 		catch(err) {
 			appLog(err);
 			console.log(err.stack);
 		}
 	},
-	connectError: function(errorCode)
+	disconnect: function(errorCode)
 	{
+		$("#info-badge").html('Disconnected from device')
+		console.log('Disconnected: ' +errorCode);
+		$("#retry-btn-container").show();
+	},
+	error: function(errorCode){
 		$("#info-badge").html('Connect error: ' + errorCode)
 		console.log('Connect error: ' + errorCode);
 		$("#retry-btn-container").show();
+
 	}
 }	

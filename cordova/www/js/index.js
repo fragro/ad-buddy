@@ -42,19 +42,8 @@ var app = {
 			evothings.ble.connectToDevice(
 				device,
 				function(device) { views.main(device) },
-				function(errorCode)
-				{
-					$("#info-badge").html('Disconnected from device')
-					console.log('Disconnected: ' +errorCode);
-					$("#retry-btn-container").show();
-
-				},
-				function(errorCode)
-				{
-					$("#info-badge").html('Connect error: ' + errorCode)
-					console.log('Connect error: ' + errorCode);
-					$("#retry-btn-container").show();
-				}
+				function(errorCode) { views.disconnect(errorCode) },
+				function(errorCode) { views.error(errorCode) }
 			)
 		}
 	},
@@ -67,7 +56,8 @@ var app = {
 		this.receivedEvent('deviceready');
 		var resetBtn = document.getElementById("retry-btn");
 		resetBtn.addEventListener('click', function(){
-			console.log("test")
+			console.log("Retry connection...")
+			$("#retry-btn-container").hide();
 			evothings.ble.startScan(self.onDeviceFound.bind(this), self.onConnectError.bind(this));
 		})
 	},
